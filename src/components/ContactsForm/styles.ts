@@ -1,17 +1,26 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+	border: 1px solid #cdcdcd;
+	width: 100vw;
+	height: fit-content;
+	display: flex;
+	flex-direction: row;
+	justify-content: left;
+`;
+
 export const FormContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: left;
-	border-right: 1px solid #cdcdcd;
+	border: 1px solid #cdcdcd;
 	padding: 40px;
 
 	h1 {
 		font-size: 24px;
 		font-weight: 700;
-		color: #656565;
+		color: #ffffff;
 	}
 `;
 
@@ -39,7 +48,7 @@ export const FormStyle = styled.form`
 	label {
 		font-size: 14px;
 		margin: 10px 0;
-		color: #656565;
+		color: #ffffff;
 	}
 
 	& > span {

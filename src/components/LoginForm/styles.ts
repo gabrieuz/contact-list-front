@@ -5,13 +5,24 @@ export const FormContainer = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: left;
-	border-right: 1px solid #cdcdcd;
+	border: 1px solid #cdcdcd;
 	padding: 40px;
 
 	h1 {
 		font-size: 24px;
 		font-weight: 700;
-		color: #656565;
+		color: #ffffff;
+	}
+
+	hr {
+		border: 1px solid #6a6a6a;
+		margin: 15px 0;
+	}
+
+	a {
+		color: #ffffff;
+		font-size: 14px;
+		text-decoration: none;
 	}
 `;
 
@@ -39,7 +50,7 @@ export const FormStyle = styled.form`
 	label {
 		font-size: 14px;
 		margin: 10px 0;
-		color: #656565;
+		color: #ffffff;
 	}
 
 	& > span {
@@ -57,7 +68,7 @@ export const FormStyle = styled.form`
 		border-radius: 4px;
 		color: #ffffff;
 		font-weight: 700;
-		margin: 20px 0;
+		margin-top: 20px;
 		outline: none;
 	}
 

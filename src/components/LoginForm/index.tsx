@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../../services/api";
 import { FormContainer, FormStyle } from "./styles";
+import { toast } from "react-toastify";
 
 export interface ILoginFormInput {
 	email: string;
@@ -10,6 +11,14 @@ export interface ILoginFormInput {
 }
 
 export default function LoginForm({ setResult }: any) {
+	const sucessToast = () => {
+		toast.success("Usuário logado com sucesso!");
+	};
+
+	const errorToast = () => {
+		toast.error("Erro ao fazer login, verifique usuário ou senha!");
+	};
+
 	const schema = yup.object({
 		email: yup.string().email("E-mail inválido.").required("E-mail obrigatório."),
 		password: yup.string().required("Senha obrigatória."),
@@ -24,16 +33,20 @@ export default function LoginForm({ setResult }: any) {
 	});
 
 	const onSubmit = (data: ILoginFormInput) => {
-
-		api.post("/login", data).then((response) => {
-			setResult(response.data);
-		});
-
+		api.post("/login", data)
+			.then((response) => {
+				setResult(response.data);
+			})
+			.then(() => {
+				window.location.href = "/contacts";
+			}).catch((error) => {
+				errorToast();
+			});
 	};
 
 	return (
 		<FormContainer>
-			<h1>Cadastrar Usuário</h1>
+			<h1>Entrar</h1>
 			<FormStyle onSubmit={handleSubmit(onSubmit)}>
 				<label htmlFor="email">Email*</label>
 				<input type="text" id="email" {...register("email")} />
@@ -44,6 +57,8 @@ export default function LoginForm({ setResult }: any) {
 				{errors.password && <p>{errors.password.message}</p>}
 
 				<button type="submit">Login</button>
+				<hr />
+				<a href="/register">Não tem uma conta? Cadastre-se</a>
 			</FormStyle>
 		</FormContainer>
 	);

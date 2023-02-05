@@ -1,8 +1,11 @@
 import * as yup from "yup";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../../services/api";
 import { FormContainer, FormStyle } from "./styles";
+import ContactsList from "../ContactsList";
+import { Container } from "../ContactsList/styles";
 
 export interface IContactsFormInput {
 	email: string;
@@ -10,7 +13,9 @@ export interface IContactsFormInput {
 	phone: string;
 }
 
-export default function ContactsForm({ setResult }: any) {
+export default function ContactsForm() {
+	const [contacts, setContacts] = useState<IContactsFormInput[]>([]);
+
 	const schema = yup.object({
 		email: yup.string().email("E-mail inválido.").required("E-mail obrigatório."),
 		fullName: yup.string().required("Nome obrigatório."),
@@ -27,28 +32,28 @@ export default function ContactsForm({ setResult }: any) {
 
 	const onSubmit = (data: IContactsFormInput) => {
 		api.post("/contacts", data).then((response) => {
-			setResult(response.data);
+			setContacts([response.data]);
 		});
 	};
 
 	return (
-		<FormContainer>
-			<h1>Cadastrar Contato</h1>
-			<FormStyle onSubmit={handleSubmit(onSubmit)}>
-				<label htmlFor="email">Email*</label>
-				<input type="text" id="email" {...register("email")} />
-				{errors.email && <p>{errors.email.message}</p>}
-
-				<label htmlFor="fullName">Nome Completo*</label>
-				<input type="text" id="fullName" {...register("fullName")} />
-				{errors.fullName && <p>{errors.fullName.message}</p>}
-
-				<label htmlFor="phone">Telefone*</label>
-				<input type="text" id="phone" {...register("phone")} />
-				{errors.phone && <p>{errors.phone.message}</p>}
-
-				<button type="submit">Cadastrar</button>
-			</FormStyle>
-		</FormContainer>
+		<Container>
+			<FormContainer>
+				<h1>Cadastrar Contato</h1>
+				<FormStyle onSubmit={handleSubmit(onSubmit)}>
+					<label htmlFor="email">Email*</label>
+					<input type="text" id="email" {...register("email")} />
+					{errors.email && <p>{errors.email.message}</p>}
+					<label htmlFor="fullName">Nome Completo*</label>
+					<input type="text" id="fullName" {...register("fullName")} />
+					{errors.fullName && <p>{errors.fullName.message}</p>}
+					<label htmlFor="phone">Telefone*</label>
+					<input type="text" id="phone" {...register("phone")} />
+					{errors.phone && <p>{errors.phone.message}</p>}
+					<button type="submit">Cadastrar</button>
+				</FormStyle>
+			</FormContainer>
+			<ContactsList result={contacts} />
+		</Container>
 	);
 }

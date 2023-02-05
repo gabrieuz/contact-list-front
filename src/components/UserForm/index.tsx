@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../../services/api";
 import { FormContainer, FormStyle } from "./styles";
+import { toast, ToastContainer } from "react-toastify";
 
 export interface IUserFormInput {
 	email: string;
@@ -12,6 +13,15 @@ export interface IUserFormInput {
 }
 
 export default function UserForm({ setResult }: any) {
+
+	const sucessToast = () => {
+		toast.success("Usuário cadastrado com sucesso!");
+	};
+
+	const errorToast = () => {
+		toast.error("Erro ao cadastrar usuário!");
+	};
+
 	const schema = yup.object({
 		email: yup.string().email("E-mail inválido.").required("E-mail obrigatório."),
 		password: yup.string().required("Senha obrigatória."),
@@ -31,6 +41,8 @@ export default function UserForm({ setResult }: any) {
 
 		api.post("/users", data).then((response) => {
 			setResult(response.data);
+		}).catch((error) => {
+			errorToast();
 		});
 
 	};
@@ -56,6 +68,8 @@ export default function UserForm({ setResult }: any) {
 				{errors.phone && <p>{errors.phone.message}</p>}
 
 				<button type="submit">Cadastrar</button>
+				<hr />
+				<a href="/">Retornar</a>
 			</FormStyle>
 		</FormContainer>
 	);
